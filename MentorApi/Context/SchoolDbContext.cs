@@ -1,9 +1,11 @@
 ﻿using MentorApi.Entities.AppdbContextEntity;
+using MentorApi.Entities.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace MentorApi.Context
 {
-    public class SchoolDbContext:DbContext
+    public class SchoolDbContext:IdentityDbContext<AppUser, AppRole, string>
     {
         public SchoolDbContext(DbContextOptions options) : base(options)
         {

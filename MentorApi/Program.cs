@@ -4,6 +4,7 @@ using MentorApi.Context;
 using MentorApi.Extensions;
 using MentorApi.Implementations;
 using MentorApi.Implementations.UnitOfWorks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,13 +32,21 @@ var app = builder.Build();
 
 
 // Configure the HTTP request pipeline.
+//Middlewares here 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.UseHttpsRedirection();
+//app.Use(async (context, next) => {
+//    Console.WriteLine("Start middleware");
+//    await next.Invoke();
+//    Console.WriteLine("Stop middleware");
+//});
+//app.Run(async context => {
+//    Console.WriteLine("Run middleware");
+//});
 
 app.ConfigureExceptionHandler();    
 app.UseAuthorization();
