@@ -1,18 +1,10 @@
 ﻿using AutoMapper;
-using MentorApi.Abstractions.IRepositories;
 using MentorApi.Abstractions.IUnitOfWorks;
 using MentorApi.Abstractions.Services;
-using MentorApi.Context;
-using MentorApi.DTOs.SchoolDTOs;
 using MentorApi.DTOs.StudentDTOs;
 using MentorApi.Entities.AppdbContextEntity;
 using MentorApi.Model;
-using Microsoft.AspNetCore.Razor.TagHelpers;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
-using System.Buffers;
-using System.Collections.Generic;
-using System.Linq.Expressions;
 
 namespace MentorApi.Implementations
 {

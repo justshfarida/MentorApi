@@ -28,7 +28,8 @@ namespace MentorApi.Controllers
         public async Task<ActionResult<ResponseModel<SchoolCreateDTO>>> Create(SchoolCreateDTO schoolCreate)
         {
             var response = await _schoolService.CreateSchools(schoolCreate);
-            return StatusCode(response.Status, response);
+            return StatusCode(response.Status, response);// This is equivalent to : return new ObjectResult(response) { StatusCode = response.StatusCode };
+
 
         }
 
