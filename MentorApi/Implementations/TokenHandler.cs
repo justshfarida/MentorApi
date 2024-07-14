@@ -42,7 +42,7 @@ namespace MentorApi.Implementations
             };
 
             var roles = await userManager.GetRolesAsync(user);
-            claims.AddRange(roles.Select(role => (new Claim(ClaimTypes.Role, role));
+            claims.AddRange(roles.Select(role => (new Claim(ClaimTypes.Role, role))));
 
             tokenDTO.ExpirationTime = DateTime.UtcNow.AddMinutes(1);
             JwtSecurityToken securityToken = new JwtSecurityToken(
