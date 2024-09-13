@@ -1,6 +1,8 @@
 ﻿using MentorApi.Abstractions.Services;
 using MentorApi.DTOs.UserDTOs;
 using MentorApi.Model;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MentorApi.Controllers
@@ -17,6 +19,7 @@ namespace MentorApi.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult<ResponseModel<List<UserGetDTO>>>> GetAll()
         {
             var response = await _userService.GetAllUsersAsync();
@@ -41,12 +44,22 @@ namespace MentorApi.Controllers
             return StatusCode(response.Status, response);
         }
         [HttpGet("GetRoles")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+
         public async Task<ActionResult<ResponseModel<string>>> GetRolesTo(string userIdOrName)
         {
             var response = await _userService.GetRolesToUserAsync(userIdOrName);
             return StatusCode(response.Status, response);
         }
-    //[HttpPost("AssignRoles")]
-    
+        [HttpPost("AssignRoles")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+
+        public async Task<IActionResult> AssignRoleToUser(string userId, string[] roles)
+        {
+            var response = await _userService.AssignRoletoUserAsync(userId, roles);
+            return StatusCode(response.Status, response);
+
+        }
+
     }
 }

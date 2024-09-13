@@ -1,6 +1,8 @@
 ﻿using MentorApi.Abstractions.Services;
 using MentorApi.DTOs.SchoolDTOs;
 using MentorApi.Model;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MentorApi.Controllers
@@ -17,6 +19,7 @@ namespace MentorApi.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles ="User, Admin")]
         public async Task<ActionResult<ResponseModel<List<SchoolGetDTO>>>> GetAll()
         {
             var response = await _schoolService.GetAllSchools();
@@ -25,6 +28,8 @@ namespace MentorApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+
         public async Task<ActionResult<ResponseModel<SchoolCreateDTO>>> Create(SchoolCreateDTO schoolCreate)
         {
             var response = await _schoolService.CreateSchools(schoolCreate);
@@ -34,6 +39,8 @@ namespace MentorApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+
         public async Task<ActionResult<ResponseModel<bool>>> Delete(int id)
         {
             var response = await _schoolService.DeleteSchools(id);
@@ -41,6 +48,8 @@ namespace MentorApi.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+
         public async Task<ActionResult<ResponseModel<bool>>> Update(SchoolUpdateDTO schoolUpdate)
         {
             var response = await _schoolService.UpdateSchool(schoolUpdate);
@@ -49,6 +58,8 @@ namespace MentorApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User, Admin")]
+
         public async Task<ActionResult<ResponseModel<SchoolGetDTO>>> GetById(int id)
         {
             var response = await _schoolService.GetSchoolById(id);

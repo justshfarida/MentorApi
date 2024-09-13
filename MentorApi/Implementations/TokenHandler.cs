@@ -44,10 +44,10 @@ namespace MentorApi.Implementations
             var roles = await userManager.GetRolesAsync(user);
             claims.AddRange(roles.Select(role => (new Claim(ClaimTypes.Role, role))));
 
-            tokenDTO.ExpirationTime = DateTime.UtcNow.AddMinutes(1);
+            tokenDTO.ExpirationTime = DateTime.UtcNow.AddMinutes(5);
             JwtSecurityToken securityToken = new JwtSecurityToken(
                 audience: configuration["Token:Audience"],
-                issuer: configuration["Token:Issuer"],
+                issuer: configuration["Token:Issuer"],  
                 expires: tokenDTO.ExpirationTime,
                 signingCredentials: signingCredentials,
                 claims: claims

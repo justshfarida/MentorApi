@@ -8,7 +8,7 @@ namespace MentorApi.Extensions
 {
     public static class CustomValidationResponse
     {
-        public static void UseCustomValidationResponse(IServiceCollection services)
+        public static void UseCustomValidationResponse(this IServiceCollection services)
         {
             services.Configure<ApiBehaviorOptions>(options =>
             {

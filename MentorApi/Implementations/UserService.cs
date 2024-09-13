@@ -59,6 +59,7 @@ namespace MentorApi.Implementations
                 if (!result.Succeeded)
                 {
                     responseDTO.Message = string.Join("\n", result.Errors.Select(error => $"{error.Code}-{error.Description}"));
+                    return responseModel;
                 }
 
                 responseDTO.Message = "User Successfully created";
@@ -67,6 +68,7 @@ namespace MentorApi.Implementations
 
                 responseModel.Data = responseDTO;
                 responseModel.Status = 201;
+
             }
             AppUser _user = await _userManager.FindByNameAsync(model.UserName);
             if (_user == null) {

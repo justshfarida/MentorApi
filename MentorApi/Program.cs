@@ -14,6 +14,7 @@ using System.Security.Claims;
 using FluentValidation.AspNetCore;
 using MentorApi.DTOs.SchoolDTOs;
 using MentorApi.Validations;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,8 +22,43 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers().AddFluentValidation(confiq=>confiq.RegisterValidatorsFromAssemblyContaining<SchoolCreateDTOValidator>());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.UseCustomValidationResponse();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(swagger =>
+{
+    //This is to generate the Default UI of Swagger Documentation  
+    swagger.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "Restaurant Final API",
+        Description = "ASP.NET Core 6 Web API"
+    });
+    // To Enable authorization using Swagger (JWT)  
+    swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT Authorization header using the Bearer scheme."
+    });
+    swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                          new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                }
+                            },
+                            new string[] {}
+
+                    }
+                });
+});
 // Add AutoMapper
 builder.Services.AddAutoMapper(typeof(Program));
 
@@ -43,6 +79,8 @@ builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<ISchoolService, SchoolService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRoleService,  RoleService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
 builder.Services.AddScoped<ITokenHandler, MentorApi.Implementations.TokenHandler>();
 builder.Services.AddAuthentication(x =>
 {
@@ -75,6 +113,7 @@ builder.Services.AddAuthentication(x =>
 
 
 });
+
 
 var app = builder.Build();
 
